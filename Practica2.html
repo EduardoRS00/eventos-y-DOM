@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Validación</title>
+</head>
+<body>
+    <h2>Formulario de Login</h2>
+    <form id="formulario">
+        <!-- Campo de Email -->
+        <div>
+            <label for="email">Email:</label>
+            <input type="text" id="email" required>
+            <span id="emailError" style="color: red;"></span>
+        </div>
+
+        <!-- Campo de Password -->
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <span id="passwordError" style="color: red;"></span>
+        </div>
+
+        <!-- Botón de Enviar -->
+        <button type="submit" id="submitBtn" disabled>Enviar</button>
+    </form>
+
+    <script>
+        // Expresiones regulares para validar email y password
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const passwordRegex = /^[a-zA-Z0-9]{8,10}$/;
+
+        // Elementos del DOM
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const submitBtn = document.getElementById("submitBtn");
+        const emailError = document.getElementById("emailError");
+        const passwordError = document.getElementById("passwordError");
+
+        // Función para validar el email 
+        function validarEmail(email) {
+            if (!emailRegex.test(email)) {
+                emailError.textContent = "Formato de email incorrecto. Ejemplo: xxxx@yyyy.zzzz";
+                return false;
+            }
+            emailError.textContent = "";  
+            return true;
+        }
+
+        // Función para validar la contraseña
+        function validarPassword(password) {
+            if (!passwordRegex.test(password)) {
+                passwordError.textContent = "La contraseña debe tener entre 8 y 10 caracteres.";
+                return false;
+            }
+            passwordError.textContent = "";  
+            return true;
+        }
+
+        // Validar al perder el foco en el email
+        emailInput.addEventListener("blur", function() {
+            validarEmail(emailInput.value);
+            habilitarBoton();
+        });
+
+        // Validar al perder el foco en el password
+        passwordInput.addEventListener("blur", function() {
+            validarPassword(passwordInput.value);
+            habilitarBoton();
+        });
+
+        // Función para habilitar o deshabilitar el botón
+        function habilitarBoton() {
+            if (validarEmail(emailInput.value) && validarPassword(passwordInput.value)) {
+                submitBtn.disabled = false; 
+            } else {
+                submitBtn.disabled = true; 
+            }
+        }
+    </script>
+</body>
+</html>
